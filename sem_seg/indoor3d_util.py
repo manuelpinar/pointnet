@@ -28,7 +28,6 @@ def get_info_classes(cls_path):
 def collect_point_label(anno_path, out_filename, cls_path, file_format='txt'):
     """ Convert original dataset files to data_label file (each line is XYZRGBL).
         We aggregated all the points from each instance in the room.
-
     Args:
         anno_path: path to annotations. e.g. Area_1/office_2/Annotations/
         out_filename: path to save collected points and labels (each line is XYZRGBL)
@@ -113,7 +112,7 @@ def sample_data(data, num_sample):
     else:
         sample = np.random.choice(N, num_sample-N)
         dup_data = data[sample, ...]
-        return np.concatenate([data, dup_data], 0), range(N)+list(sample)
+        return np.concatenate([data, dup_data], 0), list(range(N))+list(sample)
 
 def sample_data_label(data, label, num_sample):
     new_data, sample_indices = sample_data(data, num_sample)
@@ -257,7 +256,6 @@ def room2blocks_wrapper_normalized(data_label_filename, num_point, block_size=1.
 
 def room2samples(data, label, sample_num_point):
     """ Prepare whole room samples.
-
     Args:
         data: N x 6 numpy array, 012 are XYZ in meters, 345 are RGB in [0,1]
             assumes the data is shifted (min point is origin) and
@@ -351,7 +349,11 @@ def collect_bounding_box(anno_path, out_filename, cls_path):
     g_classes, g_class2label, g_label2color = get_info_classes(cls_path)
 
     for f in glob.glob(os.path.join(anno_path, '*.txt')):
-        cls = os.path.basename(f).split('_')[0]
+        bits = os.path.basename(f).split('_')
+        for bit in range(len(bits) - 2):
+            cls = cls + bits[bit] + "_"
+        cls = cls + bits[bit + 1]
+
         if cls not in g_classes: # note: in some room there is 'staris' class..
             cls = 'clutter'
         points = np.loadtxt(f)
@@ -535,7 +537,6 @@ def collect_point_bounding_box(anno_path, out_filename, file_format, cls_path):
         file_format: output file format, txt or numpy
     Returns:
         None
-
     Note:
         room points are shifted, the most negative point is now at origin.
     """
@@ -582,5 +583,3 @@ def collect_point_bounding_box(anno_path, out_filename, file_format, cls_path):
         print('ERROR!! Unknown file format: %s, please use txt or numpy.' % \
             (file_format))
         exit()
-
-
