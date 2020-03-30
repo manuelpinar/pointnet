@@ -9,8 +9,7 @@ import indoor3d_util
 
 '''
 Call:
-
-python txt_to_npy.py --path_in ../data/txt/ --path_out ../data/ply/ --path_cls meta/class_names.txt
+python txt_to_npy.py --path_in ../data/txt/ --path_out ../data/npy/ --path_cls meta/class_names.txt
 '''
 
 parser = argparse.ArgumentParser()
@@ -29,7 +28,7 @@ if not os.path.exists(path_out):
 
 for folder in natsorted(os.listdir(path_in)):
 
-    path_annotation = os.path.join(path_in, folder, "Annotations")
+    path_annotation = os.path.join(path_in, folder, "annotations")
     print(path_annotation)
 
     elements = path_annotation.split('/')
