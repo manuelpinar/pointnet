@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Mar 31 20:15:18 2020
+
+@author: Manuel Pinar-Molina
+"""
+
 import os
 import numpy as np
 import argparse
@@ -16,8 +23,8 @@ python npy_to_h5.py --path_in ../data/npy/ --path_out ../data/h5/
 '''
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path_in', help='path to the npy data folder.')
-parser.add_argument('--path_out', help='path to save h5 folder.')
+parser.add_argument('--path_in', default ='C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/data_npy', help='path to the npy data folder.')
+parser.add_argument('--path_out', default ='C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/data_h5',help='path to save h5 folder.')
 
 parsed_args = parser.parse_args(sys.argv[1:])
 
