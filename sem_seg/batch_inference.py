@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr  3 20:03:47 2020
+
+@author: Manuel Pinar-Molina from PointNet of Stanford
+"""
+
 import argparse
 import os
 import sys
@@ -11,14 +18,15 @@ import indoor3d_util
 "python batch_inference.py --path_data a/b/c --path_cls meta/class_or.txt --model_path RUNS/test_indoor --dump_dir RUNS/test_indoor --visu"
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path_data', help='folder with train test data')
-parser.add_argument('--path_cls', help='path to classes txt.')
+parser.add_argument('--path_data', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/data_npy', help='folder with train test data')
+parser.add_argument('--path_cls', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/classes_folder/classes_simples.txt', help='path to classes txt.')
 parser.add_argument('--gpu', type=int, default=0, help='GPU to use [default: GPU 0]')
-parser.add_argument('--batch_size', type=int, default=1, help='Batch Size during training [default: 1]')
+parser.add_argument('--batch_size', type=int, default=16, help='Batch Size during training [default: 1]')
 parser.add_argument('--num_point', type=int, default=4096, help='Point number [default: 4096]')
-parser.add_argument('--model_path', required=True, help='model checkpoint file path')
+#parser.add_argument('--model_path', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/sem_seg/log', required=True, help='model checkpoint file path')
+parser.add_argument('--model_path', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/sem_seg/log/model.ckpt', help='model checkpoint file path')
 parser.add_argument('--no_clutter', action='store_true', help='If true, donot count the clutter class')
-parser.add_argument('--visu', action='store_true', help='Whether to output OBJ file for prediction visualization.')
+parser.add_argument('--visu', default = 'True', help='Whether to output OBJ file for prediction visualization.')
 parsed_args = parser.parse_args()
 
 path_data = parsed_args.path_data
@@ -28,14 +36,16 @@ NUM_CLASSES = len(open(path_cls).readlines(  ))
 
 BATCH_SIZE = parsed_args.batch_size
 NUM_POINT = parsed_args.num_point
-MODEL_PATH = os.path.join(parsed_args.model_path, "model.ckpt")
+#MODEL_PATH = os.path.join(parsed_args.model_path, "model.ckpt")
+MODEL_PATH = parsed_args.model_path
 GPU_INDEX = parsed_args.gpu
-DUMP_DIR = os.path.join(parsed_args.model_path, "dump")
+#DUMP_DIR = os.path.join(parsed_args.model_path, "dump")
+DUMP_DIR = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/sem_seg/log/dump'
 if not os.path.exists(DUMP_DIR): os.mkdir(DUMP_DIR)
 LOG_FOUT = open(os.path.join(DUMP_DIR, 'log_evaluate.txt'), 'w')
 LOG_FOUT.write(str(parsed_args)+'\n')
 
-path_test = os.path.join(path_data, 'test/npy')
+path_test = os.path.join(path_data, 'test')
 
 
 def log_string(out_str):
@@ -82,7 +92,6 @@ def evaluate():
     output_filelist = os.path.join(DUMP_DIR, "output_filelist.txt")
     fout_out_filelist = open(output_filelist, 'w')
 
-    path_test = os.path.join(path_data, 'test/npy')
 
     for root, dirs, files in os.walk(path_test):  # for each folder
 
@@ -99,7 +108,8 @@ def evaluate():
                 total_seen += b
                 fout_out_filelist.write(out_data_label_filename+'\n')
     fout_out_filelist.close()
-    log_string('all room eval accuracy: %f'% (total_correct / float(total_seen)))
+    if total_seen > 0:
+        log_string('all image eval accuracy: %f'% (total_correct / float(total_seen)))
 
 def eval_one_epoch(sess, ops, room_path, out_data_label_filename, out_gt_label_filename):
     error_cnt = 0
@@ -177,7 +187,8 @@ def eval_one_epoch(sess, ops, room_path, out_data_label_filename, out_gt_label_f
                 total_correct_class[l] += (pred_label[i-start_idx, j] == l)
 
     log_string('eval mean loss: %f' % (loss_sum / float(total_seen/NUM_POINT)))
-    log_string('eval accuracy: %f'% (total_correct / float(total_seen)))
+    if total_seen > 0:
+        log_string('eval accuracy: %f'% (total_correct / float(total_seen)))
     fout_data_label.close()
     fout_gt_label.close()
     if parsed_args.visu:
