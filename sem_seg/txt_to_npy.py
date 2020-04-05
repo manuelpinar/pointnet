@@ -2,7 +2,6 @@
 """
 Created on Wed Mar 18 17:59:27 2020
 
-@author: Manuel Pinar-Molina
 """
 
 import os
