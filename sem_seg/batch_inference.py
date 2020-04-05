@@ -2,7 +2,6 @@
 """
 Created on Fri Apr  3 20:03:47 2020
 
-@author: Manuel Pinar-Molina from PointNet of Stanford
 """
 
 import argparse
