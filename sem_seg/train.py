@@ -20,13 +20,13 @@ from model import *
 "RUN python train.py --path_data a/b/c --cls 13 --log_dir RUNS/a --batch_size 10 --max_epoch 50"
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path_data', help='folder with train test data')
-parser.add_argument('--cls', type=int, help='number of classes')
+parser.add_argument('--path_data', default='C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/data_h5', help='folder with train test data')
+parser.add_argument('--cls', type=int, default=5, help='number of classes')
 parser.add_argument('--gpu', type=int, default=0, help='GPU to use [default: GPU 0]')
 parser.add_argument('--log_dir', default='log', help='Log dir [default: log]')
 parser.add_argument('--num_point', type=int, default=4096, help='Point number [default: 4096]')
 parser.add_argument('--max_epoch', type=int, default=50, help='Epoch to run [default: 50]')
-parser.add_argument('--batch_size', type=int, default=24, help='Batch Size during training [default: 24]')
+parser.add_argument('--batch_size', type=int, default=16, help='Batch Size during training [default: 24]')
 parser.add_argument('--learning_rate', type=float, default=0.001, help='Initial learning rate [default: 0.001]')
 parser.add_argument('--momentum', type=float, default=0.9, help='Initial learning rate [default: 0.9]')
 parser.add_argument('--optimizer', default='adam', help='adam or momentum [default: adam]')
@@ -65,8 +65,9 @@ BN_DECAY_CLIP = 0.99
 HOSTNAME = socket.gethostname()
 
 # ------------------------ OK ------------------------
-path_train = os.path.join(path_data, 'train/h5')
-files_train = provider.getDataFiles(os.path.join(path_train, 'files.txt'))
+#path_train = os.path.join(path_data, 'train/h5')
+path_train = path_data
+files_train = provider.getDataFiles(os.path.join(path_train, 'files_train.txt'))
 filelist_train = provider.getDataFiles(os.path.join(path_train, 'filelist.txt'))
 
 data_batch_list = []
@@ -81,9 +82,9 @@ train_data = np.concatenate(data_batch_list, 0)
 train_label = np.concatenate(label_batch_list, 0)
 print(train_data.shape, train_label.shape)
 
-
-path_test = os.path.join(path_data, 'test/h5')
-files_test = provider.getDataFiles(os.path.join(path_test, 'files.txt'))
+#path_test = os.path.join(path_data, 'test/h5')
+path_test = path_data
+files_test = provider.getDataFiles(os.path.join(path_test, 'files_test.txt'))
 filelist_test = provider.getDataFiles(os.path.join(path_test, 'filelist.txt'))
 
 data_batch_list = []
