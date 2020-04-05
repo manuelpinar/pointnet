@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Mar 18 17:59:27 2020
+
+@author: Manuel Pinar-Molina
+"""
+
 import os
 import sys
 import argparse
@@ -13,9 +20,9 @@ python txt_to_npy.py --path_in ../data/txt/ --path_out ../data/npy/ --path_cls m
 '''
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path_in', help='path to the txt data folder.')
-parser.add_argument('--path_out', help='path to save ply folder.')
-parser.add_argument('--path_cls', help='path to classes txt.')
+parser.add_argument('--path_in', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/data_txt', help='path to the txt data folder.')
+parser.add_argument('--path_out', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/data_npy', help='path to save ply folder.')
+parser.add_argument('--path_cls', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/classes_folder/classes_simples.txt', help='path to classes txt.')
 
 parsed_args = parser.parse_args(sys.argv[1:])
 
@@ -31,6 +38,7 @@ for folder in natsorted(os.listdir(path_in)):
     path_annotation = os.path.join(path_in, folder, "annotations")
     print(path_annotation)
 
-    elements = path_annotation.split('/')
-    out_filename = os.path.join(path_out, elements[-2]+'.npy')
+    #elements = path_annotation.split('/')
+    out_filename = os.path.join(path_out, folder +'.npy')
+    #out_filename = os.path.join(path_out, elements[-2]+'.npy')
     indoor3d_util.collect_point_label(path_annotation, out_filename, path_cls, 'numpy')
