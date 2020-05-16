@@ -20,7 +20,7 @@ from model import *
 "RUN python train.py --path_data a/b/c --cls 13 --log_dir RUNS/a --batch_size 10 --max_epoch 50"
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path_data', default='C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/data_h5', help='folder with train test data')
+parser.add_argument('--path_data', default='C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point_Cloud/pointnet-tuberias/data/data_h5', help='folder with train test data')
 parser.add_argument('--cls', type=int, default=5, help='number of classes')
 parser.add_argument('--gpu', type=int, default=0, help='GPU to use [default: GPU 0]')
 parser.add_argument('--log_dir', default='log', help='Log dir [default: log]')
@@ -65,8 +65,8 @@ BN_DECAY_CLIP = 0.99
 HOSTNAME = socket.gethostname()
 
 # ------------------------ OK ------------------------
-#path_train = os.path.join(path_data, 'train/h5')
-path_train = path_data
+path_train = os.path.join(path_data, 'train')
+#path_train = path_data
 files_train = provider.getDataFiles(os.path.join(path_train, 'files_train.txt'))
 filelist_train = provider.getDataFiles(os.path.join(path_train, 'filelist.txt'))
 
@@ -82,8 +82,8 @@ train_data = np.concatenate(data_batch_list, 0)
 train_label = np.concatenate(label_batch_list, 0)
 print(train_data.shape, train_label.shape)
 
-#path_test = os.path.join(path_data, 'test/h5')
-path_test = path_data
+path_test = os.path.join(path_data, 'test')
+#path_test = path_data
 files_test = provider.getDataFiles(os.path.join(path_test, 'files_test.txt'))
 filelist_test = provider.getDataFiles(os.path.join(path_test, 'filelist.txt'))
 
