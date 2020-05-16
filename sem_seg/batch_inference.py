@@ -2,6 +2,7 @@
 """
 Created on Fri Apr  3 20:03:47 2020
 
+@author: Manuel Pinar-Molina from PointNet of Stanford
 """
 
 import argparse
@@ -17,13 +18,13 @@ import indoor3d_util
 "python batch_inference.py --path_data a/b/c --path_cls meta/class_or.txt --model_path RUNS/test_indoor --dump_dir RUNS/test_indoor --visu"
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path_data', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/data_npy', help='folder with train test data')
-parser.add_argument('--path_cls', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/data/classes_folder/classes_simples.txt', help='path to classes txt.')
+parser.add_argument('--path_data', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point_Cloud/pointnet-tuberias/data/data_npy', help='folder with train test data')
+parser.add_argument('--path_cls', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point_Cloud/pointnet-tuberias/data/classes_folder/classes_simples.txt', help='path to classes txt.')
 parser.add_argument('--gpu', type=int, default=0, help='GPU to use [default: GPU 0]')
 parser.add_argument('--batch_size', type=int, default=16, help='Batch Size during training [default: 1]')
 parser.add_argument('--num_point', type=int, default=4096, help='Point number [default: 4096]')
 #parser.add_argument('--model_path', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/sem_seg/log', required=True, help='model checkpoint file path')
-parser.add_argument('--model_path', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/sem_seg/log/model.ckpt', help='model checkpoint file path')
+parser.add_argument('--model_path', default = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point_Cloud/pointnet-tuberias/sem_seg/log/train_5(decay_rate_0.8)/model.ckpt', help='model checkpoint file path')
 parser.add_argument('--no_clutter', action='store_true', help='If true, donot count the clutter class')
 parser.add_argument('--visu', default = 'True', help='Whether to output OBJ file for prediction visualization.')
 parsed_args = parser.parse_args()
@@ -39,7 +40,7 @@ NUM_POINT = parsed_args.num_point
 MODEL_PATH = parsed_args.model_path
 GPU_INDEX = parsed_args.gpu
 #DUMP_DIR = os.path.join(parsed_args.model_path, "dump")
-DUMP_DIR = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point Cloud/pointnet-tuberias/sem_seg/log/dump'
+DUMP_DIR = 'C:/Users/manue/Desktop/Universidad/DOCTORADO/TEORIA/Point_Cloud/pointnet-tuberias/sem_seg/log/dump/train_5'
 if not os.path.exists(DUMP_DIR): os.mkdir(DUMP_DIR)
 LOG_FOUT = open(os.path.join(DUMP_DIR, 'log_evaluate.txt'), 'w')
 LOG_FOUT.write(str(parsed_args)+'\n')
